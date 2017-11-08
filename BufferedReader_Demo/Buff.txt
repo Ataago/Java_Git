@@ -1,0 +1,8 @@
+class Buff {
+	public static void main(String Args[]) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+		int a = Integer.parseInt(br.readLine());
+		system.out.println(a);
+	}
+}
