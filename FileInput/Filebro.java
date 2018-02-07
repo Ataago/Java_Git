@@ -1,13 +1,13 @@
 import java.io.*;
 
 class Filebro {
-	public static void main(String Args[]) throws IOException {
+	public static void main(String Args[ataa]) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
 		char c;
 		int i;
-		//File ataa = new File("E:\\Java_Git\\FileInput\\createdFiles\\bhaisab.txt");
-		FileOutputStream fo = new FileOutputStream(Args[0]/*ataa,false*/);
+		
+		FileOutputStream fo = new FileOutputStream(Args[0]);
 		System.out.println("q to exit");
 		do{
 			c = (char)br.read();

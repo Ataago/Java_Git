@@ -1,5 +1,5 @@
 class Cyl extends Solid {
-	double h;
+	float h;
 	Cyl(double h)
 	{
 		this.h = h;
