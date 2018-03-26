@@ -1,0 +1,226 @@
+import java.util.Scanner;
+
+public class Test_Module_3 {
+    public static void main(String args[]){
+        Account a;
+        Scanner scan = new Scanner(System.in);
+
+        while(true){
+            System.out.println("MAIN MENU");
+            System.out.println("----------");
+            System.out.println("\t1. Interest Calculator - SB");
+            System.out.println("\t2. Interest Calculator - FB");
+            System.out.println("\t3. Interest Calculator - RD");
+            System.out.println("\t4. Exit");
+            System.out.print("Enter your option(1..4): ");
+            int choice = scan.nextInt();
+
+            switch (choice){
+
+                case 1:
+                    //SB Account
+                    System.out.print("Enter the Average amount in your account: ");
+                    double amount = scan.nextDouble();
+                    System.out.print("Enter 1 for Normal or 2 for NRI accont: ");
+                    int type = scan.nextInt();
+
+                    a = new SBAccount(amount,type);
+                    System.out.println("Interest gained is: "+a.calculateInterest()+"\n");
+                    break;
+
+                case 2:
+                    //FD Account
+                    System.out.print("Enter the FD amount: ");
+                    amount = scan.nextDouble();
+                    System.out.print("Enter the number of days: ");
+                    int noOfDays = scan.nextInt();
+                    System.out.print("Enter your age: ");
+                    int ageOfACHolder = scan.nextInt();
+
+                    if(noOfDays < 7 || ageOfACHolder < 18){
+                        System.out.println("Invalid Number of days. Please enter non-negative values.\n");
+                        break;
+                    }
+
+                    a = new FDAccount(amount,ageOfACHolder,noOfDays);
+                    System.out.println("Interest gained is: "+a.calculateInterest()+"\n");
+                    break;
+
+                case 3:
+                    //RD Account
+                    System.out.print("Enter the RD amount: ");
+                    double monthlyamount = scan.nextDouble();
+                    System.out.print("Enter the number of Months (6/9/12/15/18/21 months): ");
+                    int noOfMonths = scan.nextInt();
+                    System.out.print("Enter your age: ");
+                    ageOfACHolder = scan.nextInt();
+
+                    if(noOfMonths < 0 || ageOfACHolder < 18){
+                        System.out.println("Invalid Number of days. Please enter non-negative values.\n");
+                        break;
+                    }
+
+                    a = new RDAccount(monthlyamount,ageOfACHolder,noOfMonths);
+                    System.out.println("Interest gained is: "+a.calculateInterest()+"\n");
+                    break;
+
+                case 4:
+                    //Exit
+                    System.out.println("Program Terminated");
+                    System.exit(0);
+            }
+        }
+    }
+}
+abstract class Account{
+    double interestRate;
+    double amount;
+
+    abstract double calculateInterest();
+}
+class SBAccount extends Account{
+    private double interestRate;
+    private double amount;
+    private int type;
+
+    public SBAccount(double amount,int type){
+        this.amount = amount;
+        this.type = type;
+    }
+    @Override
+    double calculateInterest() {
+        if (type == 1){
+            //Normal Account
+            interestRate = amount*0.01*4;
+        }
+        else if (type == 2){
+            //NRI Account
+            interestRate = amount*0.01*6;
+        }
+        else
+            System.out.println("Invalid Account Type.");
+        return interestRate;
+    }
+}
+class FDAccount extends Account{
+    private double interestRate;
+    private double amount;
+    private int noOfDays;
+    private int ageOfACHolder;
+
+    public FDAccount(double amount,int ageOfACHolder,int noOfDays){
+        this.amount = amount;
+        this.ageOfACHolder = ageOfACHolder;
+        this.noOfDays = noOfDays;
+    }
+    @Override
+    public double calculateInterest() {
+        if(amount<10000000){
+            //less than 1 crore
+            if(ageOfACHolder<60){
+                //general
+                if(noOfDays>=7 && noOfDays<15)
+                    interestRate = amount*0.045;
+                if (noOfDays>14 && noOfDays<30)
+                    interestRate = amount*0.0475;
+                if (noOfDays>29 && noOfDays<46)
+                    interestRate = amount*0.055;
+                if (noOfDays>45 && noOfDays<61)
+                    interestRate = amount*0.07;
+                if (noOfDays>60 && noOfDays<185)
+                    interestRate = amount*0.075;
+                if (noOfDays>184 && noOfDays<366)
+                    interestRate = amount*0.08;
+            }
+            else{
+                //Senior Citizen
+                if(noOfDays>=7 && noOfDays<15)
+                    interestRate = amount*0.01*5;
+                if (noOfDays>14 && noOfDays<30)
+                    interestRate = amount*0.01*5.25;
+                if (noOfDays>29 && noOfDays<46)
+                    interestRate = amount*0.01*6;
+                if (noOfDays>45 && noOfDays<61)
+                    interestRate = amount*0.01*7.5;
+                if (noOfDays>60 && noOfDays<185)
+                    interestRate = amount*0.01*8;
+                if (noOfDays>184 && noOfDays<366)
+                    interestRate = amount*0.01*8.5;
+            }
+        }
+        else {
+            //above 1 crore
+            if(noOfDays>=7 && noOfDays<15)
+                interestRate = amount*0.01*6.5;
+            if (noOfDays>14 && noOfDays<30)
+                interestRate = amount*0.01*6.75;
+            if (noOfDays>29 && noOfDays<46)
+                interestRate = amount*0.01*6.75;
+            if (noOfDays>45 && noOfDays<61)
+                interestRate = amount*0.01*8;
+            if (noOfDays>60 && noOfDays<185)
+                interestRate = amount*0.01*8.5;
+            if (noOfDays>184 && noOfDays<366)
+                interestRate = amount*0.01*10;
+        }
+        return interestRate;
+    }
+}
+
+class RDAccount extends Account{
+    private Double inerestRate;
+    private double amount;
+    private int noOfMonths;
+    private int ageOfACHolder;
+    private double monthlyAmount;
+
+    public RDAccount(double monthlyAmount,int ageOfACHolder,int noOfMonths){
+        this.monthlyAmount = monthlyAmount;
+        this.ageOfACHolder = ageOfACHolder;
+        this.noOfMonths = noOfMonths;
+    }
+    @Override
+    double calculateInterest() {
+        amount = monthlyAmount*noOfMonths;
+
+        if(ageOfACHolder<60){
+            //General
+            if(noOfMonths == 6)
+                inerestRate = amount*0.01*7.50;
+            else if(noOfMonths == 9)
+                inerestRate = amount*0.01*7.75;
+            else if(noOfMonths == 12)
+                inerestRate = amount*0.01*8;
+            else if(noOfMonths == 15)
+                inerestRate = amount*0.01*8.25;
+            else if(noOfMonths == 18)
+                inerestRate = amount*0.01*8.5;
+            else if(noOfMonths == 21)
+                inerestRate = amount*0.01*8.75;
+            else{
+                System.out.println("Invalid month.");
+                return 0;
+            }
+        }
+        else{
+            //Senior Citzen
+            if(noOfMonths == 6)
+                inerestRate = amount*0.01*8;
+            else if(noOfMonths == 9)
+                inerestRate = amount*0.01*8.25;
+            else if(noOfMonths == 12)
+                inerestRate = amount*0.01*8.5;
+            else if(noOfMonths == 15)
+                inerestRate = amount*0.01*8.75;
+            else if(noOfMonths == 18)
+                inerestRate = amount*0.01*9;
+            else if(noOfMonths == 21)
+                inerestRate = amount*0.01*9.25;
+            else{
+                System.out.println("Invalid month.");
+                return 0;
+            }
+        }
+        return inerestRate;
+    }
+}
